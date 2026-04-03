@@ -10,7 +10,12 @@ class XRayDatasetDefinition:
             for idx, class_name in enumerate(sorted(os.listdir(dataset_path)))
             }
         
-        self.transform = transforms.Resize((224, 224))
+        self.transform = transforms.Compose([
+            transforms.RandomHorizontalFlip(p=0.5),  
+            transforms.Resize((224, 224)),
+            transforms.ToTensor(),
+        ])
+        
         # Create a list of (image_path, label) tuples
         self.samples = []
         for class_name in self.class_to_label:
