@@ -1,5 +1,5 @@
 import os
-
+from PIL import Image
 class XRayDatasetDefinition:
     def __init__(self, dataset_path):
         self.dataset_path = dataset_path
@@ -21,4 +21,9 @@ class XRayDatasetDefinition:
             
     def __len__(self):
         return len(self.samples)
+    
+    def __getitem__(self, index):
+        img_path, label = self.samples[index]
+        img = Image.open(img_path).convert('RGB') 
+        return img, label
             
