@@ -1,5 +1,6 @@
 import os
 from PIL import Image
+from torchvision import transforms
 class XRayDatasetDefinition:
     def __init__(self, dataset_path):
         self.dataset_path = dataset_path
@@ -9,6 +10,7 @@ class XRayDatasetDefinition:
             for idx, class_name in enumerate(sorted(os.listdir(dataset_path)))
             }
         
+        self.transform = transforms.Resize((224, 224))
         # Create a list of (image_path, label) tuples
         self.samples = []
         for class_name in self.class_to_label:
@@ -24,6 +26,6 @@ class XRayDatasetDefinition:
     
     def __getitem__(self, index):
         img_path, label = self.samples[index]
-        img = Image.open(img_path).convert('RGB') 
+        img = Image.open(img_path).convert('RGB')
+        img  = self.transform(img)
         return img, label
-            
